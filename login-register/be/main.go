@@ -40,6 +40,8 @@ var (
 
 	users []User
 	userMutex sync.Mutex
+
+	otpStore int
 )
 
 func generateRandomId() string {
@@ -182,6 +184,7 @@ func verifyHandler(w http.ResponseWriter, r *http.Request) {
 	case "GET":
 		if email != "" {
 			otpGenerated = sendOTP(email)
+			otpStore = otpGenerated
 			if otpGenerated == 0 {
 				http.Error(w, "Failed to send Email", http.StatusBadRequest)
 				return
@@ -205,9 +208,9 @@ func verifyHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		fmt.Println(otpBody.OTP)
-		fmt.Println(otpGenerated)
+		fmt.Println(otpStore)
 
-		if otpBody.OTP == otpGenerated {
+		if otpBody.OTP == otpStore {
 			fmt.Println("Yes")
 			successResp := HealthResponse {
 				Status: "Ok",
@@ -216,13 +219,16 @@ func verifyHandler(w http.ResponseWriter, r *http.Request) {
 			w.Header().Set("Content-Type", "application/json")
 			json.NewEncoder(w).Encode(successResp)
 		} else {
-			http.Error(w, "Invalid OTP", http.StatusUnauthorized)
+			fmt.Println("No")
+			failureResp := HealthResponse {
+				Status: "Not Ok",
+				Message: "Wrong OTP",
+			}
+			w.Header().Set("Content-Type", "application/json")
+			json.NewEncoder(w).Encode(failureResp)
 		}
-
-		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(otpBody)
 	default:
-
+			http.Error(w, "Method not allowed", http.StatusBadRequest)
 	}
 }
 

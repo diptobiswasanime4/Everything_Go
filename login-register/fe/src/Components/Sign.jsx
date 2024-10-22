@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+import { useRecoilState } from "recoil";
+import { authState } from "../recoil/atoms/recoilState";
 import { Navigate, useLocation, Link } from "react-router-dom";
 import axios from "axios";
 
 function Sign() {
+  const [auth, setAuth] = useRecoilState(authState);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [otp, setOTP] = useState("");
@@ -13,8 +16,8 @@ function Sign() {
 
   async function register() {
     let body = {
-      Email: email,
-      password: password,
+      Email: auth.Email,
+      password: auth.Password,
     };
     const resp = await axios.post("http://localhost:3000/register", body, {
       headers: {
@@ -44,15 +47,15 @@ function Sign() {
           className="border rounded-md"
           type="text"
           placeholder="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={auth.Email}
+          onChange={(e) => setAuth({ ...auth, Email: e.target.value })}
         />
         <input
           className="border"
           type="password"
           placeholder="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          value={auth.Password}
+          onChange={(e) => setAuth({ ...auth, Password: e.target.value })}
         />
         <button
           onClick={register}
@@ -76,16 +79,16 @@ function Sign() {
           className="border rounded-md"
           type="text"
           placeholder="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={auth.Email}
+          onChange={(e) => setAuth({ ...auth, Email: e.target.value })}
         />
         <div className="flex flex-col">
           <input
             className="border"
             type="password"
             placeholder="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={auth.Password}
+            onChange={(e) => setAuth({ ...auth, Password: e.target.value })}
           />
           <Link
             className="text-xl m-1 text-yellow-700 hover:underline"

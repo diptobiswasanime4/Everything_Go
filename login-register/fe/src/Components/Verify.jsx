@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Navigate } from "react-router-dom";
 import axios from "axios";
 
 function Verify() {
@@ -18,7 +19,7 @@ function Verify() {
           "Content-Type": "application/json",
         },
       });
-      console.log(resp);
+      console.log(resp.data);
     } catch (error) {
       console.log("Got an error.", error);
     }
@@ -31,7 +32,7 @@ function Verify() {
   }
   return (
     <div className="flex flex-col items-center gap-4 text-2xl my-8">
-      <div className="">Verify</div>
+      <div className="text-4xl mb-4">Verify</div>
       <input
         className="border rounded-md"
         type="text"
@@ -41,7 +42,7 @@ function Verify() {
       />
       <button
         onClick={verify}
-        className="bg-black hover:opacity-85 p-2 rounded-xl text-white"
+        className="bg-black hover:opacity-85 w-1/6 text-3xl p-1 mt-2 rounded-xl text-white"
       >
         Submit
       </button>

@@ -1,3 +1,4 @@
+import ForgotPassword from "./Components/ForgotPassword";
 import Sign from "./Components/Sign";
 import Todos from "./Components/Todos";
 import Verify from "./Components/Verify";
@@ -10,7 +11,7 @@ function App() {
         <Route path="/login" element={<Sign />}></Route>
         <Route path="/register" element={<Sign />}></Route>
         <Route path="/verify" element={<Verify />}></Route>
-        <Route path="/forgot-password" element={<Verify />}></Route>
+        <Route path="/forgot-password" element={<ForgotPassword />}></Route>
         <Route path="/todos" element={<Todos />}></Route>
       </Routes>
     </>
